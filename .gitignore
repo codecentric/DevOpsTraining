@@ -1,2 +1,6 @@
 *.iml
 .idea/
+
+.vagrant
+machine/*.log
+*.retry
