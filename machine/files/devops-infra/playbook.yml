@@ -1,0 +1,26 @@
+- name: Create platform directory
+  file: path="{{ platform_directory }}" state=directory mode=0755 owner=root group=root
+
+- name: Create platform directory for concourse keys
+  file: path="{{ platform_directory }}/keys" state=directory mode=0755 owner=root group=root
+
+- name: Generate keys
+  shell: |
+    ssh-keygen -t rsa -f "{{ platform_directory }}/keys/tsa_host_key" -N ''
+    ssh-keygen -t rsa -f "{{ platform_directory }}/keys/session_signing_key" -N ''
+    ssh-keygen -t rsa -f "{{ platform_directory }}/keys/worker_key" -N ''
+
+- name: Generate allowed workers keys
+  shell: cat "{{ platform_directory }}/keys/worker_key.pub" | sudo tee -a "{{ platform_directory }}/keys/authorized_worker_keys"
+
+- name: Copy the platform docker compose file
+  copy: src=files/devops-infra/docker-compose.yml dest="{{ platform_directory }}/docker-compose.yml" owner=root group=root mode=0644
+
+- name: Copy the platform docker service
+  copy: src=files/devops-infra/devops-platform.service dest=/etc/systemd/system/devops-platform.service owner=root group=root mode=0644
+
+- name: Systemd service install
+  shell: |
+    systemctl daemon-reload
+    systemctl enable devops-platform.service
+    systemctl start devops-platform.service

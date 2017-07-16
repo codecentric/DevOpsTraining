@@ -1,13 +1,23 @@
 ---
 - name: DevOps training machine
   hosts: devops
-  gather_facts: yes
-  tasks:
-      - name: installing repo for Java 8 in Ubuntu
-        apt_repository: repo='ppa:openjdk-r/ppa'
+  gather_facts: false
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (sudo apt -y update && sudo apt install -y python-minimal)
+      changed_when: False
+    - setup: # aka gather_facts
 
 - hosts: devops
+
+  vars:
+    platform_directory: /opt/platform
+    pip_install_packages:
+    - name: docker
 
   roles:
     - role: geerlingguy.ntp
     - role: geerlingguy.docker
+
+  tasks:
+    - include: files/devops-infra/playbook.yml

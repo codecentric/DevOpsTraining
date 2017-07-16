@@ -1,0 +1,13 @@
+[Service]
+WorkingDirectory=/opt/platform
+ExecStop=/usr/local/bin/docker-compose halt
+ExecStart=/usr/local/bin/docker-compose up
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=DevOpsPlatform
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
