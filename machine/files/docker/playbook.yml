@@ -1,0 +1,7 @@
+- name: Override docker service
+  copy: src=files/docker/docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
+
+- name: Systemd docker-management service update
+  shell: |
+    systemctl daemon-reload
+    systemctl restart docker.service

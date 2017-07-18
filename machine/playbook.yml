@@ -21,3 +21,4 @@
 
   tasks:
     - include: files/devops-infra/playbook.yml
+    - include: files/docker/playbook.yml

@@ -1,3 +1,10 @@
+[Unit]
+Description=DevOps training platform
+Documentation=https://github.com/codecentric/DevOpsTraining
+After=docker.service
+Wants=docker.service
+Requires=docker.service
+
 [Service]
 WorkingDirectory=/opt/platform
 ExecStop=/usr/local/bin/docker-compose halt
