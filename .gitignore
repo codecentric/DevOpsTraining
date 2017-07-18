@@ -4,3 +4,6 @@
 .vagrant
 machine/*.log
 *.retry
+
+
+build/

@@ -4,6 +4,9 @@
 - name: Create platform directory for concourse keys
   file: path="{{ platform_directory }}/keys" state=directory mode=0755 owner=root group=root
 
+- name: Create nexus data directory
+  file: path="{{ platform_directory }}/nexus-data" state=directory mode=0755 owner=200 group=root
+
 - name: Generate keys
   shell: |
     ssh-keygen -t rsa -f "{{ platform_directory }}/keys/tsa_host_key" -N ''

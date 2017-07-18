@@ -30,3 +30,8 @@ services:
     environment:
       CONCOURSE_GARDEN_DNS_SERVER: 8.8.8.8
       CONCOURSE_TSA_HOST: concourse-web
+
+  concourse-worker:
+    image: sonatype/nexus
+    ports: ["8081:8081"]
+    volumes: ["./nexus-data:/sonatype-work"]
