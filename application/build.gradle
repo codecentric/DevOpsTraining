@@ -15,7 +15,7 @@ apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'devops-training-application'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 springBoot {
@@ -42,7 +42,9 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "http://nexus:23235/nexus/content/repositories/releases/")
+            repository(url: "http://nexus:8081/nexus/content/repositories/releases/") {
+                authentication(userName: "admin", password: "admin123")
+            }
         }
     }
 }
