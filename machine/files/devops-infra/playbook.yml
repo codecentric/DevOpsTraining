@@ -4,6 +4,9 @@
 - name: Create platform directory for concourse keys
   file: path="{{ platform_directory }}/keys" state=directory mode=0755 owner=root group=root
 
+- name: Create platform directory for rsync keys
+  file: path="{{ platform_directory }}/rsync" state=directory mode=0755 owner=root group=root
+
 - name: Create nexus data directory
   file: path="{{ platform_directory }}/nexus-data" state=directory mode=0755 owner=200 group=root
 
@@ -21,6 +24,9 @@
 
 - name: Copy the platform docker service
   copy: src=files/devops-infra/devops-platform.service dest=/etc/systemd/system/devops-platform.service owner=root group=root mode=0644
+
+- name: Copy the platform rsync keys
+  copy: src=files/devops-infra/rsync/rsync.pub dest="{{ platform_directory }}/rsync/rsync.pub" owner=root group=root mode=0644
 
 - name: Systemd service install
   shell: |

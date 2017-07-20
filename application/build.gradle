@@ -8,6 +8,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -36,3 +37,13 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     testCompile("junit:junit")
 }
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "http://nexus:23235/nexus/content/repositories/releases/")
+        }
+    }
+}
+

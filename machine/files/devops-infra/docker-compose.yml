@@ -36,6 +36,11 @@ services:
     ports: ["8081:8081"]
     volumes: ["./nexus-data:/sonatype-work"]
 
+  rsync:
+    image: kyleondy/rsync
+    ports: ["5643:22"]
+    volumes: ["./concourse-data:/concourse-data","./rsync/rsync.pub:/root/.ssh/authorized_keys"]
+
   deployment:
     image: asannou/docker-api-proxy
     ports: ["9898:2375"]

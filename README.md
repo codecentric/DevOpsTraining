@@ -15,5 +15,10 @@ The goals of this training are:
 
 - Get familiar with DevOps concepts
 - Use a build infrastructure (Concourse)
-- Build, test, secure and run an application
+- Build, test, provision, secure and run an application
 - Do green/blue deployments
+
+
+## Exercises
+
+

@@ -1,0 +1,50 @@
+resources:
+- name: sources
+  type: git
+  source:
+    uri: https://github.com/codecentric/DevOpsTraining.git
+
+jobs:
+- name: build
+  plan:
+  - get: sources
+    trigger: true
+  - task: build software
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: openjdk, tag: 8-alpine}
+      inputs:
+        - name: sources
+      outputs:
+        - name: repo-cache
+      run:
+        path: ./gradlew
+        args: ["build"]
+        dir: sources/application
+  - put: repo-cache
+
+
+- name: test
+  plan:
+  - get: sources
+    passed: [build]
+  - task: unit-test
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: openjdk, tag: 8-alpine}
+      inputs:
+        - name: sources
+      run:
+        path: ./gradlew
+        args: ["test"]
+        dir: repo-cache/application
+
+
+- name: deploy
+  plan:
+  - get: sources
+    passed: [build]

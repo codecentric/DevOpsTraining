@@ -5,5 +5,5 @@
 machine/*.log
 *.retry
 
-
+.gradle/
 build/
