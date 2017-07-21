@@ -1,21 +1,30 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "http://dl.bintray.com/tanemahuta/gradle-plugins" }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
+plugins {
+    id 'tane.mahuta.gradle.release-plugin' version '1.0.1'
+    id "tane.mahuta.gradle.semver-plugin" version "1.0.1"
+    id 'java'
+    id 'maven'
+    id 'eclipse'
+    id 'idea'
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
 
 jar {
     baseName = 'devops-training-application'
     version = '0.1.0'
+}
+
+subprojects {
+    version = rootProject.version
 }
 
 springBoot {
