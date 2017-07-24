@@ -9,6 +9,7 @@ Requires=docker.service
 WorkingDirectory=/opt/platform
 ExecStop=/usr/local/bin/docker-compose halt
 ExecStart=/usr/local/bin/docker-compose up
+ExecReload=/usr/local/bin/docker-compose restart
 Restart=always
 StandardOutput=syslog
 StandardError=syslog

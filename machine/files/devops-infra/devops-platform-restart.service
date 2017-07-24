@@ -1,0 +1,11 @@
+[Unit]
+Description=DevOps training platform (restart service)
+After=docker.service
+Wants=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/bin/systemctl reload devops-platform.service
+
+[Install]
+WantedBy=multi-user.target

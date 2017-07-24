@@ -1,0 +1,5 @@
+[Path]
+PathModified=/opt/platform/git-keys/id_rsa.pub
+
+[Install]
+WantedBy=default.target

@@ -4,17 +4,21 @@
 - name: Create platform directory for concourse keys
   file: path="{{ platform_directory }}/keys" state=directory mode=0755 owner=root group=root
 
-- name: Create platform directory for rsync keys
-  file: path="{{ platform_directory }}/rsync" state=directory mode=0755 owner=root group=root
+- name: Create platform directory for git_rsa keys
+  file: path="{{ platform_directory }}/git-keys" state=directory mode=0755 owner=root group=root
 
 - name: Create nexus data directory
   file: path="{{ platform_directory }}/nexus-data" state=directory mode=0755 owner=200 group=root
+
+- name: Create git data data directory
+  file: path="{{ platform_directory }}/git-data" state=directory mode=0755 owner=200 group=root
 
 - name: Generate keys
   shell: |
     ssh-keygen -t rsa -f "{{ platform_directory }}/keys/tsa_host_key" -N ''
     ssh-keygen -t rsa -f "{{ platform_directory }}/keys/session_signing_key" -N ''
     ssh-keygen -t rsa -f "{{ platform_directory }}/keys/worker_key" -N ''
+    ssh-keygen -t rsa -f "{{ platform_directory }}/git-keys/id_rsa" -N ''
 
 - name: Generate allowed workers keys
   shell: cat "{{ platform_directory }}/keys/worker_key.pub" | sudo tee -a "{{ platform_directory }}/keys/authorized_worker_keys"
@@ -22,14 +26,27 @@
 - name: Copy the platform docker compose file
   copy: src=files/devops-infra/docker-compose.yml dest="{{ platform_directory }}/docker-compose.yml" owner=root group=root mode=0644
 
+- name: Copy the platform docker path
+  copy: src=files/devops-infra/devops-platform-restart.path dest=/etc/systemd/system/devops-platform-restart.path owner=root group=root mode=0644
+
+- name: Copy the platform docker restart service
+  copy: src=files/devops-infra/devops-platform-restart.service dest=/etc/systemd/system/devops-platform-restart.service owner=root group=root mode=0644
+
 - name: Copy the platform docker service
   copy: src=files/devops-infra/devops-platform.service dest=/etc/systemd/system/devops-platform.service owner=root group=root mode=0644
 
-- name: Copy the platform rsync keys
-  copy: src=files/devops-infra/rsync/rsync.pub dest="{{ platform_directory }}/rsync/rsync.pub" owner=root group=root mode=0644
+- name: Generate project repo
+  shell: |
+    git clone https://github.com/codecentric/DevOpsTraining.git
+    git clone --bare DevOpsTraining DevOpsTraining.git
+  args:
+    chdir: "{{ platform_directory }}/git-data"
 
 - name: Systemd service install
   shell: |
     systemctl daemon-reload
     systemctl enable devops-platform.service
     systemctl start devops-platform.service
+    systemctl enable devops-platform-restart.service
+    systemctl enable devops-platform-restart.path
+    systemctl start devops-platform-restart.path

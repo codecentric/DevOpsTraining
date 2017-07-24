@@ -36,10 +36,17 @@ services:
     ports: ["8081:8081"]
     volumes: ["./nexus-data:/sonatype-work"]
 
-  rsync:
-    image: kyleondy/rsync
-    ports: ["5643:22"]
-    volumes: ["./concourse-data:/concourse-data","./rsync/rsync.pub:/root/.ssh/authorized_keys"]
+  git:
+    image: jkarlos/git-server-docker
+    ports: ["23237:22"]
+    volumes: ["./git-data:/git-server/repos","./git-keys:/git-server/keys"]
+
+
+  sshkey:
+    image: hylke1982/upload-ssh-key
+    ports: ["23238:3000"]
+    volumes: ["./git-keys/id_rsa.pub:/git-server/keys/id_rsa.pub"]
+    command: ['--file','/git-server/keys/id_rsa.pub']
 
   deployment:
     image: asannou/docker-api-proxy
