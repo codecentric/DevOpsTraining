@@ -19,7 +19,7 @@ After the installation of VirtualBox, double-click on the provided image. The im
 available in the VirtualBox interface. After importing the machine should be visible and can be started by 
 right-clicking on the machine and selecting **start -> normal start**
 
-![VM Setup]("images/vm-setup.png")
+![VM Setup](images/vm-setup.png)
 
 ## After starting
 
@@ -29,7 +29,7 @@ After starting the DevOps platform becomes available. This platform is divided i
 - Build/Deployment (Concourse)
 - Run (blue/green deployment and ngnix)
 
-![Training environment]("images/training-environment.png")
+![Training environment](images/training-environment.png)
 
 ## Provide public SSH key
 
