@@ -11,5 +11,7 @@ Machine for running the DevOps training
 
 ## Getting started
 
-- Install required Ansible packages ```shell $ sudo ansible-galaxy install -r requirements.yml``` (Makes docker 
+- Install required Ansible packages ```bash $ sudo ansible-galaxy install -r requirements.yml``` (Makes docker 
 installation available on host machine)
+- Install vagrant disk plugin ```bash $ vagrant plugin install vagrant-disksize```
+- Start the machine with ```bash $ vagrant up```
