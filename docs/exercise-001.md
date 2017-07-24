@@ -12,6 +12,7 @@ The following prerequisites are required for participating in this workshop.
 - 20GB of disk space
 - 4GB of RAM
 - Virtual machine image (provided), or can be build from the machine directory.
+- Internet connection
 
 ## Setting up the virtual machine
 
@@ -31,20 +32,33 @@ After starting the DevOps platform becomes available. This platform is divided i
 
 ![Training environment](images/training-environment.png)
 
-## Provide public SSH key
 
-Provide a public SSH key that is used for git commits. Most of the time the this public key will be available at 
-```$HOME/.ssh/id_rsa.pub```. Copy the contents of this key and paste it at the following location. 
-[Upload SSH key](http://localhost:23238/). After submitting the platform will restart and will be available in a few 
-seconds.
+## Fork the GIT repository
 
-## Clone the GIT repository
+By forking the GIT repository on GitHub will allow for changes to be individual
 
-The repository for the workshop can now be cloned. Used the following command.
+- Create a GitHub account (skip this step if a account already exists)
+- Supply a SSH public [key](https://github.com/settings/keys) (skip this step if SSH public key is already provided)
+- Go to the training git [repository](https://github.com/codecentric/DevOpsTraining)
+- Select to fork option in the top right corner 
+![Fork the repo](images/fork-repo.png)
+- Select the account to fork to
+- The repo will be available under the https://github.com/**username**/DevOpsTraining (replace **username** with 
+selected username)
+- Now clone the repo ```$ git clone https://github.com/username/DevOpsTraining``` (note: replace username with 
+own username)
 
+## Install Fly
+
+Fly is the command line tooling for controlling behavior in concourse. The tooling can be downloaded from the [concourse 
+start page](http://localhost:23234/). After installing the tooling can be used to login and create a alias for the 
+concourse instance. [Fly documentation](https://concourse.ci/fly-cli.html)
+
+Logging in:
 ```bash
-$ git clone ssh://git@localhost:23237/git-server/repos/DevOpsTraining.git 
+$ fly -t lite login -c http://localhost:23234
 ```
+Use **concourse** as username and **changeme** as password.
 
 Now it is time to build the part of the continuous delivery pipeline.
 
