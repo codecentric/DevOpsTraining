@@ -1,0 +1,1 @@
+# Exercise 006 - Run on green
