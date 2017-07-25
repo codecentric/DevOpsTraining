@@ -19,10 +19,7 @@ resources:
   type: git # Resource type
   source:
     uri: git@github.com:Hylke1982/DevOpsTraining.git
-    private_key: |
-      -----BEGIN RSA PRIVATE KEY-----
-      # Key data here
-      -----END RSA PRIVATE KEY-----
+    private_key: ((private-repo-key))
 
 # Jobs section
 jobs:
@@ -74,3 +71,6 @@ jobs:
 ![Trigger manual build](images/trigger-manual-build.png)
 
 Now it is time to make the build plan part of the source control, making the pipeline.yml the seed job.
+
+**Note: Because the training runs on docker-compose caching the result of a build is not stored. This means everytime a full 
+build is done.**

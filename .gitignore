@@ -9,3 +9,5 @@ machine/*.log
 
 .gradle/
 build/
+
+secrets.yml

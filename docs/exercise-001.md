@@ -60,5 +60,17 @@ $ fly -t lite login -c http://localhost:23234
 ```
 Use **concourse** as username and **changeme** as password.
 
+## Create a secrets file
+
+To keep secrets outside the repository a **secrets.yml** is created. This can be done on the root of the repository. The
+.gitignore file does not allow for this file to be part of the repository. Create the file with the following contents.
+
+```yaml
+private-repo-key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  <your private key data>
+  -----END RSA PRIVATE KEY-----
+```
+
 Now it is time to build the part of the continuous delivery pipeline.
 
