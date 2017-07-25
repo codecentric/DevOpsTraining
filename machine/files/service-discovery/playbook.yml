@@ -1,0 +1,17 @@
+- name: Create service discovery directory
+  file: path="{{ service_discovery_directory }}" state=directory mode=0755 owner=root group=root
+
+- name: Copy the service discovery docker compose file
+  copy: src=files/service-discovery/docker-compose.yml dest="{{ service_discovery_directory }}/docker-compose.yml" owner=root group=root mode=0644
+
+- name: Copy the service discovery docker write env file
+  copy: src=files/service-discovery/write-env-file.sh dest="{{ service_discovery_directory }}/write-env-file.sh" owner=root group=root mode=0755
+
+- name: Copy the service discovery service
+  copy: src=files/service-discovery/service-discovery.service dest=/etc/systemd/system/service-discovery.service owner=root group=root mode=0644
+
+- name: Systemd service install (service discovery)
+  shell: |
+    systemctl daemon-reload
+    systemctl enable service-discovery.service
+    systemctl start service-discovery.service

@@ -12,6 +12,7 @@
 
   vars:
     platform_directory: /opt/platform
+    service_discovery_directory: /opt/service-discovery
     pip_install_packages:
     - name: docker
 
@@ -20,5 +21,6 @@
     - role: geerlingguy.docker
 
   tasks:
+    - include: files/service-discovery/playbook.yml
     - include: files/devops-infra/playbook.yml
     - include: files/docker/playbook.yml

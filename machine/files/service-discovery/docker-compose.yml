@@ -1,0 +1,17 @@
+version: "2"
+services:
+  consul:
+    image: "progrium/consul:latest"
+    container_name: "consul"
+    ports:
+      - "8400:8400"
+      - "8500:8500"
+      - "8600:53/udp"
+    command: "-server -bootstrap -ui-dir /ui"
+
+  registrator:
+    image: "gliderlabs/registrator"
+    volumes: ["/var/run/docker.sock:/tmp/docker.sock"]
+    command: "consul://consul:8500"
+    depends_on:
+    - consul

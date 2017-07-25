@@ -1,20 +1,20 @@
 [Unit]
-Description=DevOps training platform
+Description=Service Discovery DevOps  platform
 Documentation=https://github.com/codecentric/DevOpsTraining
 After=docker.service
 Wants=docker.service
 Requires=docker.service
 
 [Service]
-EnvironmentFile=/opt/service-discovery/environment
-WorkingDirectory=/opt/platform
+WorkingDirectory=/opt/service-discovery
 ExecStop=/usr/local/bin/docker-compose halt
 ExecStart=/usr/local/bin/docker-compose up
+ExecStartPost=/opt/service-discovery/write-env-file.sh
 ExecReload=/usr/local/bin/docker-compose restart
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=DevOpsPlatform
+SyslogIdentifier=ServiceDiscovery
 User=root
 Group=root
 
