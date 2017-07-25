@@ -44,11 +44,9 @@ dependencies {
 
 
 uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://nexus:8081/nexus/content/repositories/releases/") {
-                authentication(userName: "admin", password: "admin123")
-            }
+    repositories.mavenDeployer {
+        repository(url: "http://nexus:8081/nexus/content/repositories/releases") {
+            authentication(userName: "admin", password: "admin123")
         }
     }
 }
