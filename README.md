@@ -21,4 +21,4 @@ The goals of this training are:
 
 ## Exercises
 
-
+[Go to the exercises](docs/README.md)
