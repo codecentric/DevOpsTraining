@@ -21,6 +21,7 @@ services:
       CONCOURSE_EXTERNAL_URL: "localhost:5656"
       CONCOURSE_POSTGRES_DATA_SOURCE: |-
         postgres://concourse:changeme@concourse-db:5432/concourse?sslmode=disable
+    dns: ${CONCOURSE_GARDEN_DNS_SERVER}
 
   concourse-worker:
     image: concourse/concourse
@@ -30,6 +31,7 @@ services:
     environment:
       CONCOURSE_GARDEN_DNS_SERVER: ${CONCOURSE_GARDEN_DNS_SERVER}
       CONCOURSE_TSA_HOST: concourse-web
+    dns: ${CONCOURSE_GARDEN_DNS_SERVER}
 
   nexus:
     image: sonatype/nexus
@@ -52,3 +54,8 @@ services:
     image: asannou/docker-api-proxy
     ports: ["9898:2375"]
     volumes: ["/var/run/docker.sock:/docker.sock"]
+
+networks:
+  default:
+    external:
+      name: servicediscovery_default

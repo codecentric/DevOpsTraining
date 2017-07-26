@@ -7,6 +7,7 @@ buildscript {
     }
 }
 
+
 plugins {
     id 'java'
     id 'maven'
@@ -17,7 +18,7 @@ plugins {
 
 jar {
     baseName = 'devops-training-application'
-    version = '0.1.0'
+    version = project.version
 }
 
 springBoot {
@@ -48,6 +49,17 @@ uploadArchives {
         repository(url: "http://nexus.service.consul:8081/nexus/content/repositories/releases") {
             authentication(userName: "admin", password: "admin123")
         }
+        pom {
+            groupId = project.group
+            artifactId = jar.baseName
+            version = jar.version
+            project {
+                parent {
+                    groupId "org.springframework.boot"
+                    artifactId "spring-boot-starter-parent"
+                    version '1.5.4.RELEASE'
+                }
+            }
+        }
     }
 }
-
