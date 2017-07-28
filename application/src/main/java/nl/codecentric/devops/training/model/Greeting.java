@@ -9,11 +9,14 @@ public class Greeting {
 
     private final String environment;
 
+    private final String version;
+
     private final Long counter;
 
-    public Greeting(String hostName, String environment, Long counter) {
+    public Greeting(String hostName, String environment, final String version, Long counter) {
         this.hostName = hostName;
         this.environment = environment;
+        this.version = version;
         this.counter = counter;
     }
 
@@ -28,5 +31,9 @@ public class Greeting {
 
     public Long getCounter() {
         return counter;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

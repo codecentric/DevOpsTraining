@@ -13,6 +13,10 @@ DNS = sys.argv[1]
 
 print HOST_NAME, PORT_NUMBER, DNS
 
+PORT_MAP = {}
+PORT_MAP['blue'] = 18000
+PORT_MAP['green'] = 19000
+
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -30,24 +34,21 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             applicationUrl = urlparse.parse_qs(parsed.query)['application'][0]
 
+            version = urlparse.parse_qs(parsed.query)['version'][0]
+
             print environment, DNS, applicationUrl
 
-            try:
-                container = client.containers.get(environment);
-                container.stop()
-                container.remove()
-            except:
-                print "No container could be stopped"
+            self.cleanupContainer(environment)
 
             traceback.print_exc(file=sys.stdout)
             print("unable to stop container")
 
             client.containers.run('hylke1982/openjdk-download-and-run',
-                                  command=[applicationUrl, environment],
+                                  command=[applicationUrl, environment, version],
                                   name=environment,
                                   detach=True,
                                   network="servicediscovery_default",
-                                  ports={'24242/tcp': 18000},
+                                  ports={'24242/tcp': PORT_MAP[environment]},
                                   dns=[DNS])
 
         except:
@@ -57,6 +58,14 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.wfile.write(message)
         self.finish()
         return
+
+    def cleanupContainer(self, environment):
+        try:
+            container = client.containers.get(environment);
+            container.stop()
+            container.remove()
+        except:
+            print "No container could be stopped"
 
     def finish(self):
         if not self.wfile.closed:

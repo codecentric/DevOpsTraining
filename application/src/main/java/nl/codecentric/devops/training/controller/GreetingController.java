@@ -22,6 +22,9 @@ public class GreetingController {
     @Value("${environment:unknown}")
     private String environment;
 
+    @Value("${version:unknown}")
+    private String version;
+
 
     static {
         try {
@@ -33,6 +36,6 @@ public class GreetingController {
 
     @RequestMapping("/")
     public Greeting greeting() {
-        return new Greeting(serverAddress, this.environment, counter.getAndIncrement());
+        return new Greeting(serverAddress, this.environment, this.version,counter.getAndIncrement());
     }
 }
