@@ -63,8 +63,7 @@ Use **concourse** as username and **changeme** as password.
 ## Create a secrets file
 
 To keep secrets outside the repository a **secrets.yml** must be created. This can be done on the root of the repository. 
-The **.gitignore** file does not allow for this file to be part of the repository. Create the file with the following 
-contents.
+The **.gitignore** file does not allow for this file to be part of the repository. Create the file with the following contents. Make _real_ sure the key data has the same indentation as the dashes before and after, otherwise it won't parse as valid Yaml.
 
 ```yaml
 private-repo-key: |
@@ -72,6 +71,14 @@ private-repo-key: |
   <your private key data>
   -----END RSA PRIVATE KEY-----
 ```
+
+Just to be sure, instead of using your existing key-pair, it's possible to create a separate key-pair and use this from Concourse. First generate a new pair, and when asked where to save, choose a different location such as `~/Downloads/id_rsa`:
+
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+Paste the contents of the private key to the `secrets.yml` file mentioned above. Then upload the public key to GitHub here: https://github.com/settings/keys
 
 Now it is time to build the part of the continuous delivery pipeline.
 

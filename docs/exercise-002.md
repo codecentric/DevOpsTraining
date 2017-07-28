@@ -18,7 +18,8 @@ resources:
 - name: sources # Name of the resource
   type: git # Resource type
   source:
-    uri: git@github.com:Hylke1982/DevOpsTraining.git
+    uri: git@github.com:<your_github_account>/DevOpsTraining.git
+    branch: master
     private_key: ((private-repo-key))
 
 # Jobs section
@@ -30,7 +31,7 @@ jobs:
 ```
 - After saving the new pipeline can be created with **fly set-pipeline**
 ```bash
-$ fly -t lite set-pipeline -p devops-training -c pipeline.yml
+$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml
 ```
 - After applying the pipeline configuration you will get a message like this.
 ![Set pipeline result](images/setpipeline-result.png)
@@ -63,10 +64,10 @@ jobs:
         - name: sources # Use the source resource
       run:
         path: ./gradlew # Command to execute
-        args: ["build"]
+        args: ["build", "-x", "test"]
         dir: sources/application # Location to execute, note the 'sources' as directory prefix
 ```
-- Update the pipeline by execute the following command. ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml```
+- Update the pipeline by execute the following command. ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
 - Now trigger a manual build (no code changes committed to trigger the build)
 ![Trigger manual build](images/trigger-manual-build.png)
 
