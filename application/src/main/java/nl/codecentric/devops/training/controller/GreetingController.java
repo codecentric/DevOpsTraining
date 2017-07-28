@@ -19,6 +19,9 @@ public class GreetingController {
 
     private final AtomicLong counter = new AtomicLong();
 
+    @Value("${environment:unknown}")
+    private String environment;
+
 
     static {
         try {
@@ -30,6 +33,6 @@ public class GreetingController {
 
     @RequestMapping("/")
     public Greeting greeting() {
-        return new Greeting(serverAddress, "blue", counter.getAndIncrement());
+        return new Greeting(serverAddress, this.environment, counter.getAndIncrement());
     }
 }

@@ -13,7 +13,7 @@ services:
     image: concourse/concourse
     command: web
     ports: ["8080:8080"]
-    volumes: ["./keys:/concourse-keys"]
+    volumes: ["./keys:/concourse-keys","/var/run/docker.sock:/var/run/docker.sock"]
     environment:
       CONCOURSE_BASIC_AUTH_USERNAME: concourse
       CONCOURSE_BASIC_AUTH_PASSWORD: changeme
@@ -27,7 +27,7 @@ services:
     image: concourse/concourse
     privileged: true
     command: worker
-    volumes: ["./keys:/concourse-keys"]
+    volumes: ["./keys:/concourse-keys","/var/run/docker.sock:/var/run/docker.sock"]
     environment:
       CONCOURSE_GARDEN_DNS_SERVER: ${CONCOURSE_GARDEN_DNS_SERVER}
       CONCOURSE_TSA_HOST: concourse-web
@@ -38,22 +38,12 @@ services:
     ports: ["8081:8081"]
     volumes: ["./nexus-data:/sonatype-work"]
 
-  git:
-    image: jkarlos/git-server-docker
-    ports: ["23237:22"]
-    volumes: ["./git-data:/git-server/repos","./git-keys:/git-server/keys"]
-
-
-  sshkey:
-    image: hylke1982/upload-ssh-key
-    ports: ["23238:3000"]
-    volumes: ["./git-keys/id_rsa.pub:/git-server/keys/id_rsa.pub"]
-    command: ['--file','/git-server/keys/id_rsa.pub']
-
   deployment:
-    image: asannou/docker-api-proxy
-    ports: ["9898:2375"]
-    volumes: ["/var/run/docker.sock:/docker.sock"]
+    image: hylke1982/run-on-docker
+    ports: ["8000:8000"]
+    privileged: true
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    command: ${CONCOURSE_GARDEN_DNS_SERVER}
 
 networks:
   default:
