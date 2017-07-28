@@ -29,14 +29,18 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             parsed = urlparse.urlparse(self.path)
 
             print parsed
+            print urlparse.parse_qs(parsed.query)
 
-            environment = 'env-' + urlparse.parse_qs(parsed.query)['environment'][0]
+            environment = urlparse.parse_qs(parsed.query)['environment'][0]
+            dockerName = 'env-' + urlparse.parse_qs(parsed.query)['environment'][0]
 
             applicationUrl = urlparse.parse_qs(parsed.query)['application'][0]
 
             version = urlparse.parse_qs(parsed.query)['version'][0]
 
-            print environment, DNS, applicationUrl
+            print("parsed query params")
+
+            print environment, DNS, applicationUrl, version
 
             self.cleanupContainer(environment)
 
@@ -45,7 +49,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             client.containers.run('hylke1982/openjdk-download-and-run',
                                   command=[applicationUrl, environment, version],
-                                  name=environment,
+                                  name=dockerName,
                                   detach=True,
                                   network="servicediscovery_default",
                                   ports={'24242/tcp': PORT_MAP[environment]},

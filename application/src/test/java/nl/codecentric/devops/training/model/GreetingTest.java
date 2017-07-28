@@ -11,7 +11,7 @@ public class GreetingTest {
 
     @Before
     public void before() {
-        uut = new Greeting("host", "blue", 1L);
+        uut = new Greeting("host", "blue", "version",1L);
     }
 
     @Test
