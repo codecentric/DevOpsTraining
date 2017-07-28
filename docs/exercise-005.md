@@ -59,7 +59,7 @@ run: # Gradle release + version bumping
 - A script is executed within in the run section of the tasks, which basically creates a for the version, uploads the 
 artifact to artifactory and bumps the version. A **output** is used to store the changes and these changes are then 
 pushed to the git repository
-- Open [nexus](http://localhost:23235/nexus/#view-repositories;releases~browsestorage) to view the published artifact.
+- Open <a href="http://localhost:23235/nexus/#view-repositories;releases~browsestorage" target="_blank">nexus</a> to view the published artifact.
 ![Nexus releas](images/nexus-deploy.png)
 - Also view the git log for the tags
 ![Git tags](images/git-tag.png)
