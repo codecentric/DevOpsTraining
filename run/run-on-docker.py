@@ -46,6 +46,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                                   command=[applicationUrl, environment],
                                   name=environment,
                                   detach=True,
+                                  network="servicediscovery_default",
                                   ports={'24242/tcp': 18000},
                                   dns=[DNS])
 
