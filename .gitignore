@@ -11,3 +11,4 @@ machine/*.log
 build/
 
 secrets.yml
+docker-deploy.json

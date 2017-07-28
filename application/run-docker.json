@@ -1,0 +1,5 @@
+{
+  "Image" : "hylke1982/jdk-download-and-run",
+  "Cmd" : ["$url","-Penvironment=$environment"],
+  "Name" : "env-$environment"
+}

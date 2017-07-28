@@ -22,7 +22,8 @@ tag, version bump and deploy to nexus step and pushing the changes to git.
     params: {repository: sources-output} # Push latest version after tagging en version bump
 ```
 - Create a new task definition for tag, version bump and deploy in the **CI** directory, with the file name 
-**task-deploy.yml**. The contents of this file should be:
+**task-deploy.yml**. In this task a release version is created and published into Nexus, an empty commit is created for 
+the version bump and the version is stored in the Consul key-value store for later usage. The contents of this file should be:
 ```yaml
 platform: linux
 
@@ -35,6 +36,7 @@ inputs:
 
 outputs:
 - name: sources-output # Output to special name space
+- name: new-version
 
 caches:
   - path: ["sources/application/build","sources/application/.gradle"]
@@ -54,13 +56,18 @@ run: # Gradle release + version bumping
     ./gradlew -PbumpComponent=patch
     ./gradlew printVersion
     git status
+    VERSION=$(git describe --abbrev=0 --tags)
+    echo $VERSION
+    curl -X PUT -d "$VERSION" http://consul.service.consul:8500/v1/kv/version
 ```
-- Follow again the steps of committing and pushing the changes to Git. And update the pipeline with ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
+- Commit the changes and push them
+- After a few moments a new build is triggered
+- Update the pipeline with ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
 - A script is executed within in the run section of the tasks, which basically creates a for the version, uploads the 
 artifact to artifactory and bumps the version. A **output** is used to store the changes and these changes are then 
 pushed to the git repository
 - Open <a href="http://localhost:23235/nexus/#view-repositories;releases~browsestorage" target="_blank">nexus</a> to view the published artifact.
-![Nexus releas](images/nexus-deploy.png)
+![Nexus release](images/nexus-deploy.png)
 - Also view the git log for the tags
 ![Git tags](images/git-tag.png)
 
