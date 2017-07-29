@@ -12,6 +12,7 @@ version contains. To achieve this, take these steps:
 tag, version bump and deploy to nexus step and pushing the changes to git.
 ```yaml
 - name: deploy # Name of the job
+  serial: true # No parallel execution of the plan
   plan:
   - get: sources # Download the sources
     trigger: true

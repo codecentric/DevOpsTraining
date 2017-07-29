@@ -24,6 +24,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 23237, host: 23237
   # SSH Key upload
   config.vm.network "forwarded_port", guest: 23238, host: 23238
+  # Treafik
+  config.vm.network "forwarded_port", guest: 23240, host: 23240
   # Consul
   config.vm.network "forwarded_port", guest: 8500, host: 23239
   # Application (blue)

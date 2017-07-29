@@ -10,12 +10,16 @@ HOST_NAME = '0.0.0.0'  # !!!REMEMBER TO CHANGE THIS!!!
 PORT_NUMBER = 8000  # Maybe set this to 9000.
 DNS = sys.argv[1]
 
-
 print HOST_NAME, PORT_NUMBER, DNS
 
 PORT_MAP = {}
 PORT_MAP['blue'] = 18000
 PORT_MAP['green'] = 19000
+
+LABELS_BLUE={"traefik.backend" : "blue", "traefik.frontend.rule" : "Host:localhost:80"}
+LABELS_GREEN={"traefik.backend" : "green", "traefik.frontend.rule" : "Host:localhost:80"}
+
+LABELS_MAP = {"blue" : LABELS_BLUE, "green": LABELS_GREEN}
 
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -38,20 +42,27 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
             version = urlparse.parse_qs(parsed.query)['version'][0]
 
+            otherEnvironment = self.getOtherEnvironment(environment)
+            self.disableLoadBalancing(otherEnvironment)
+
             print("parsed query params")
 
-            print environment, DNS, applicationUrl, version
+            print environment, DNS, applicationUrl, version, otherEnvironment
 
-            self.cleanupContainer(environment)
+            self.cleanupContainer(dockerName)
 
             traceback.print_exc(file=sys.stdout)
             print("unable to stop container")
 
+            labels = LABELS_MAP[environment]
+            labels['traefik.enabled'] = "true"
+
             client.containers.run('hylke1982/openjdk-download-and-run',
-                                  command=[applicationUrl, environment, version],
+                                  command=[applicationUrl, "--environment=" + environment, "--version=" + version],
                                   name=dockerName,
                                   detach=True,
                                   network="servicediscovery_default",
+                                  labels=labels,
                                   ports={'24242/tcp': PORT_MAP[environment]},
                                   dns=[DNS])
 
@@ -63,6 +74,12 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.finish()
         return
 
+    def getOtherEnvironment(self, environment):
+        otherEnvironment = "blue"
+        if environment == 'blue':
+            otherEnvironment = "green"
+        return otherEnvironment
+
     def cleanupContainer(self, environment):
         try:
             container = client.containers.get(environment);
@@ -70,6 +87,17 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             container.remove()
         except:
             print "No container could be stopped"
+
+    def disableLoadBalancing(self, otherEnvironent):
+        try:
+            container = client.containers.get(otherEnvironent);
+            labels = LABELS_MAP[otherEnvironent]
+            labels['traefik.enabled'] = "false"
+            container.reload()
+        except:
+            print "No container could be updated"
+
+
 
     def finish(self):
         if not self.wfile.closed:

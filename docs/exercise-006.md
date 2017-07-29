@@ -48,3 +48,14 @@ run: # Gradle release + version bumping
 - After a few moments a new build is triggered
 - Update the pipeline with ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
 - After a successful run of the pipeline the blue environment will be available.
+- This can be checked with the following command ```$ curl http://localhost:18000```
+```json
+{
+  "hostName": "394ac3f7f401",
+  "environment": "blue",
+  "version": "1.2.18",
+  "counter": 5
+}
+```
+
+In the [next](exercise-007.md) exercise a green enviornment is introduced.
