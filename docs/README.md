@@ -9,3 +9,5 @@ The DevOps training exercises
 - [005 - Deployment of software](exercise-005.md)
 - [006 - Run software](exercise-006.md)
 - [007 - Blue / Green deployment](exercise-007.md)
+
+To find out how stuff works and is linked together, please experiment, make changes and look inside the VirtualBox at what is running and what it does.

@@ -38,11 +38,17 @@ inputs:
 
 run:
   path: ./gradlew # Command to execute
-  args: ["build"]
+  args: ["build", "-x", "test"]
   dir: sources/application # Location to execute, note the 'sources' as directory prefix
 ```
 - Commit the changes and push them
 - After a few moments a new build is triggered
 - Update the pipeline with ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
+
+The reason you first need to commit and push your changes to build-tasks before updating the pipeline, is that Concourse will fetch the task descriptions directly from Git. Without pushing, it doen't know about the task description.
+The advantage of course being that your pipeline is really part of the project and the tasks are automatically updated when checking in.
+The disadvantage that for structural pipeline changes, you first need to commit and tell Concourse it needs to update the pipeline.
+
+By prefixing a commit with `[ci skip]` you tell Concourse not to trigger the pipeline, which may come in handy for these kind of updates.
 
 Continue to the next exercise to create a test job

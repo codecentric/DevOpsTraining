@@ -11,14 +11,15 @@ Apply the following steps to create the seed pipeline configuration:
 - Step into the **DevOpsTraining** directory.
 - Create a **pipeline.yml** file
 - Add the following content to the **pipeline.yml** file, and replace the private key with private key that matches 
-public key that was supplied in exercise-001. [Concourse GIT resource](https://github.com/concourse/git-resource)
+public key that was supplied in exercise-001. <a href="https://github.com/concourse/git-resource" target="_blank">Concourse GIT resource</a>
 ```yaml
 # Resource section
 resources:
 - name: sources # Name of the resource
   type: git # Resource type
   source:
-    uri: git@github.com:Hylke1982/DevOpsTraining.git
+    uri: git@github.com:<your_github_account>/DevOpsTraining.git
+    branch: master
     private_key: ((private-repo-key))
 
 # Jobs section
@@ -30,11 +31,11 @@ jobs:
 ```
 - After saving the new pipeline can be created with **fly set-pipeline**
 ```bash
-$ fly -t lite set-pipeline -p devops-training -c pipeline.yml
+$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml
 ```
 - After applying the pipeline configuration you will get a message like this.
 ![Set pipeline result](images/setpipeline-result.png)
-- Now the pipeline is visible in the [concourse web interface](http://localhost:23234/teams/main/pipelines/devops-training)
+- Now the pipeline is visible in the <a href="http://localhost:23234/teams/main/pipelines/devops-training" target="_blank">concourse web interface</a>
 accessing the web interface can be done with username **concourse** and password **changeme**.
 ![Concourse pipeline overview](images/concourse-pipeline-overview.png)
 - The pipeline can now be activated by clicking on the 'play' button in the 'hamburger menu'
@@ -63,10 +64,10 @@ jobs:
         - name: sources # Use the source resource
       run:
         path: ./gradlew # Command to execute
-        args: ["build"]
+        args: ["build", "-x", "test"]
         dir: sources/application # Location to execute, note the 'sources' as directory prefix
 ```
-- Update the pipeline by execute the following command. ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml```
+- Update the pipeline by execute the following command. ```$ fly -t lite set-pipeline -p devops-training -c pipeline.yml --load-vars-from secrets.yml```
 - Now trigger a manual build (no code changes committed to trigger the build)
 ![Trigger manual build](images/trigger-manual-build.png)
 

@@ -1,11 +1,11 @@
 # Exercise 005 - Deploy to Nexus, and bump the version
 
-After build and test are successful it is time to create a deployment to a artefactory. In the training Nexus is used. 
-Storing it in a artifactory helps to distribute and share share software with others.
+After build and test are successful it is time to create a deployment to some artifactory. In the training Nexus is used. 
+Storing it in an artifactory helps to distribute and share software with others.
 
 ## Create the deployment job.
 
-The goal here is to place a artifact in Nexus and also make a tag in the source control system to make visible what the 
+The goal here is to place an artifact in Nexus and also make a tag in the source control system to make visible what the 
 version contains. To achieve this, take these steps:
 
 - Extend the **pipeline.yml** file with a new job called **deploy**. This job consists of 3 tasks, getting the sources, 
@@ -67,7 +67,7 @@ run: # Gradle release + version bumping
 - A script is executed within in the run section of the tasks, which basically creates a for the version, uploads the 
 artifact to artifactory and bumps the version. A **output** is used to store the changes and these changes are then 
 pushed to the git repository
-- Open [nexus](http://localhost:23235/nexus/#view-repositories;releases~browsestorage) to view the published artifact.
+- Open <a href="http://localhost:23235/nexus/#view-repositories;releases~browsestorage" target="_blank">nexus</a> to view the published artifact.
 ![Nexus release](images/nexus-deploy.png)
 - Also view the git log for the tags
 ![Git tags](images/git-tag.png)
