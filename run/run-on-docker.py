@@ -16,8 +16,8 @@ PORT_MAP = {}
 PORT_MAP['blue'] = 18000
 PORT_MAP['green'] = 19000
 
-LABELS_BLUE={"traefik.backend" : "blue", "traefik.frontend.rule" : "Host:localhost:80"}
-LABELS_GREEN={"traefik.backend" : "green", "traefik.frontend.rule" : "Host:localhost:80"}
+LABELS_BLUE={"traefik.backend" : "blue", "traefik.frontend.rule" : "PathPrefixStrip:/app"}
+LABELS_GREEN={"traefik.backend" : "green", "traefik.frontend.rule" : "PathPrefixStrip:/app"}
 
 LABELS_MAP = {"blue" : LABELS_BLUE, "green": LABELS_GREEN}
 

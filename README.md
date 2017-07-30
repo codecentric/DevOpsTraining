@@ -4,10 +4,11 @@ Goal of this training to get an experience building and running an application a
 
 ## Prerequisites
 
-- Laptop, 4GB ram + 40 Gb storage
+- Laptop, 4GB ram + 20 Gb storage
 - Git installed
 - VirtualBox installed + VirtualBox extensions
 - Editor
+- Internet connection
 
 ## Goals
 
