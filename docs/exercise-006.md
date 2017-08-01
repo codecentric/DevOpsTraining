@@ -28,11 +28,6 @@ image_resource:
   type: docker-image
   source: {repository: openjdk, tag: 8}
 
-run:
-  path: ./gradlew # Command to execute
-  args: ["build"]
-  dir: sources/application # Location to execute, note the 'sources' as directory prefix
-
 run: # Gradle release + version bumping
   path: sh
   args:
