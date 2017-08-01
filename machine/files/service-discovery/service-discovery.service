@@ -7,7 +7,7 @@ Requires=docker.service
 
 [Service]
 WorkingDirectory=/opt/service-discovery
-ExecStop=/usr/local/bin/docker-compose halt
+ExecStop=/usr/local/bin/docker-compose down
 ExecStart=/usr/local/bin/docker-compose up
 ExecStartPost=/opt/service-discovery/write-env-file.sh
 ExecReload=/usr/local/bin/docker-compose restart

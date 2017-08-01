@@ -8,7 +8,7 @@ Requires=docker.service
 [Service]
 EnvironmentFile=/opt/service-discovery/environment
 WorkingDirectory=/opt/platform
-ExecStop=/usr/local/bin/docker-compose halt
+ExecStop=/usr/local/bin/docker-compose down
 ExecStartPre=-/usr/bin/docker pull hylke1982/openjdk-download-and-run
 ExecStart=/usr/local/bin/docker-compose up
 ExecReload=/usr/local/bin/docker-compose restart

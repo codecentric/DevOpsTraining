@@ -19,9 +19,20 @@ tag, version bump and deploy to nexus step and pushing the changes to git.
     passed: [test] # Trigger after job test has passed
   - task: tag, publish and publish new version
     file: sources/CI/task-deploy.yml
-  - put: sources
+  - put: sources-write
     params: {repository: sources-output} # Push latest version after tagging en version bump
 ```
+- Add a new resource for writing to the **pipeline.yml**, this is because the **[ci skip]** is not honored within a 
+pipeline.
+```yaml
+- name: sources-write # Name of the resource
+  type: git # Resource type
+  source:
+    uri: git@github.com:Hylke1982/DevOpsTraining.git
+    private_key: ((private-repo-key))
+    branch: master
+```
+
 - Create a new task definition for tag, version bump and deploy in the **CI** directory, with the file name 
 **task-deploy.yml**. In this task a release version is created and published into Nexus, an empty commit is created for 
 the version bump and the version is stored in the Consul key-value store for later usage. The contents of this file should be:
